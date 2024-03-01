@@ -6,17 +6,22 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    // webPreferences: {
-    //   preload: path.join(__dirname, 'preload.js')
-    // }
+    webPreferences: {
+      // webSecurity: false,
+      // preload: path.join(__dirname, 'preload.js')
+    },
   });
   const startURL = url.format({
-    pathname: path.join(__dirname, "index.html"),
+    pathname: path.join(__dirname, "./app/build/index.html"),
     protocol: "file",
   });
 
+  win.webContents.openDevTools();
+
   win.loadURL(startURL);
-  win.loadFile("index.html");
+
+  // win.loadURL("http://localhost:3000");
+  // win.loadFile("./app/public/index.html");
 }
 
 app.whenReady().then(() => {
