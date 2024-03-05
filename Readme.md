@@ -23,16 +23,17 @@ For this we utilize two utility functions provided to us by electron js:
 
 `ipcRenderer.handle(”channel_name”, handlerFunction)`
 
+<!-- In this process design pattern 3 is implemented in the counter using menu bar -->
 
-<!-- In this process design pattern 3 is implemented in the counter using menu bar -->**Design Pattern 3: Main to Renderer (one-way):**
+**[Design Pattern 3: Main to Renderer (one-way):](https://www.electronjs.org/docs/latest/tutorial/ipc#pattern-3-main-to-renderer)**
 
-When sending a message from the main process to renderer we need to specify which renderer is receiving the message. To send messages to renderer we use its `WebContenets` instance. The `WebContents` instance contains `send` method. 
+When sending a message from the main process to renderer we need to specify which renderer is receiving the message. To send messages to renderer we use its `WebContenets` instance. The `WebContents` instance contains `send` method.
 
 **Step 1:** We send a message from main to renderer using `mainWindow.Webcontents.send(”channel_name”, value)`
 
-**Step 2:** Now, in our Renderer (React page), we attach an event listener for `“channel name”`   using `ipcRenderer.on(”channel_name”, handlerFunc)`
+**Step 2:** Now, in our Renderer (React page), we attach an event listener for `“channel name”` using `ipcRenderer.on(”channel_name”, handlerFunc)`
 
-**Step 3:** Given we can’t access node js features directly in frontend in electron, we will not be able to use `ipcRenderer.on(”channel_name”, handlerFunc)` directly in frontend react code. So we use context isolation and add it to renderer by exposing it in main using contextBridge like this: 
+**Step 3:** Given we can’t access node js features directly in frontend in electron, we will not be able to use `ipcRenderer.on(”channel_name”, handlerFunc)` directly in frontend react code. So we use context isolation and add it to renderer by exposing it in main using contextBridge like this:
 
 ```
 const { contextBridge, ipcRenderer } = require("electron");
