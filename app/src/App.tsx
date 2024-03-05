@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
-function App() {
+const App: React.FC = () => {
+  const [counter, setCounter] = useState(0);
+  const electron = (window as any).myAPI;
+  const handleClick = () => {
+    console.log(electron?.text1);
+    electron.send()
+  };
+
+  useEffect(() => {
+    const handleUpdateCounter = (_event: Electron.IpcRendererEvent, value: number) => {
+      setCounter((prevCounter) => prevCounter + value);
+    };
+
+    (window as any).myAPI.onUpdateCounter('update-counter', handleUpdateCounter);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <p className="p-2 m-4 font-bold">Hello darkness my old friend</p>
+      <p>Counter: {counter}</p>
+      <button className="p-2 m-4 border rounded" onClick={handleClick}>
+        Print
+      </button>
     </div>
   );
-}
+};
 
 export default App;
